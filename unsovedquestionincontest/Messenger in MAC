@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+const int M = 998244353;
+const int N = 1e5;
+void solve(){
+    int n,l;
+    cin>>n>>l;
+    int a[n],b[n];
+    vector<pair<int,int>>v;
+    
+    for(int j=0;j<n;++j){
+        cin>>a[j]>>b[j];
+        v.push_back({b[j],a[j]});
+    }
+    sort(v.begin(),v.end());
+    int ans=0;
+    for(int i=0;i<n;++i){
+        int b1=v[i].first;
+        int a1=v[i].second;
+        int sum=a1;
+       // cout<<b1<<" "<<a1<<endl;
+        int k=0;
+        multiset<int>s;
+        s.insert(a1);
+        if(a1<=l)ans=max(ans,1LL);
+        for(int j=i+1;j<n;++j){
+          
+        int b2=v[j].first;
+        int a2=v[j].second;
+         sum+=a2;
+        
+          int check=(b2-b1)+(sum);
+         // cout<<check<<" "<<i<<" "<<j<<" "<<" "<<k<<endl;
+          int w=j-i-k;
+         // cout<<w<<endl;
+          if(check<=l)ans=max(ans,w+1);
+          else {
+
+                   while(check>l && s.size()){
+                    auto it=s.end();
+                    --it;
+                    int val=*it;
+                    if(val<a2)break;
+                   // cout<<val<<endl;
+                    sum-=val;
+                    check-=val;
+                    s.erase(it);
+                    k++;
+
+                   }
+                   if(check<=l){
+                   w=j-i-k;
+                   ans=max(ans,w+1);
+               }
+          }
+             s.insert(a2);
+         
+        }
+    }
+    cout<<ans<<endl;
+    
+}
+
+
+int32_t main(){
+    int t;
+    cin >> t;
+
+    while (t--){
+         solve();
+    }
+    return 0;
+}
